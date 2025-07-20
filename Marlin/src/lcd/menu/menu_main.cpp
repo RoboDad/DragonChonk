@@ -43,6 +43,10 @@
   #include "game/game.h"
 #endif
 
+#if defined(CONFIG_DRAGON_CHONK)
+#include "../../DragonChonk.h"
+#endif
+
 #if ANY(HAS_MEDIA, HOST_PROMPT_SUPPORT) || defined(ACTION_ON_CANCEL)
   #define MACHINE_CAN_STOP 1
 #endif
@@ -329,6 +333,13 @@ void menu_main() {
     #if ENABLED(PREHEAT_SHORTCUT_MENU_ITEM)
       SUBMENU(MSG_PREHEAT_CUSTOM, menu_preheat_only);
     #endif
+
+
+    #if defined(CONFIG_DRAGON_CHONK)
+    //SUBMENU_F(FPSTR("Lens"), menu_configuration);
+    SUBMENU_F(F("Laser"), DragonChonk_menu_laser);
+    #endif
+
 
     SUBMENU(MSG_MOTION, menu_motion);
 

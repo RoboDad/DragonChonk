@@ -741,7 +741,11 @@ void MarlinUI::init() {
 
     #endif // ULTIPANEL_FLOWPERCENT
 
+    #if defined(CONFIG_DRAGON_CHONK)
+	draw_laser_status_screen();
+    #else
     draw_status_screen();
+    #endif
   }
 
   void MarlinUI::kill_screen(FSTR_P const lcd_error, FSTR_P const lcd_component) {

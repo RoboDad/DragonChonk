@@ -492,6 +492,8 @@ enum ADCIndex {
     };
 
     #define ADC0_AINCOUNT   COUNT(adc0_dma_regs_list)
+  #else // !ADC0_IS_REQUIRED
+    #define ADC0_AINCOUNT   0
   #endif // ADC0_IS_REQUIRED
 
   #if ADC1_IS_REQUIRED

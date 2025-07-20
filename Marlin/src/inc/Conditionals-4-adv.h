@@ -1407,7 +1407,7 @@
   #define SD_CONNECTION_IS(V) (_SDCARD_ID(SDCARD_CONNECTION) == _SDCARD_ID(V))
 #else
   #define SD_CONNECTION_IS(...) 0
-  #undef SD_ABORT_ON_ENDSTOP_HIT
+  //#undef SD_ABORT_ON_ENDSTOP_HIT
 #endif
 
 // Power Monitor sensors

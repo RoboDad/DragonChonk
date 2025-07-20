@@ -1153,7 +1153,13 @@ void GcodeSuite::process_parsed_command(const bool no_ok/*=false*/) {
         case 3426: M3426(); break;                                // M3426: Read MCP3426 ADC (over i2c)
       #endif
 
-      default: parser.unknown_command_warning(); break;
+      #if defined(CONFIG_DRAGON_CHONK)
+        case 4200: M4200(); break;                                // M4200: Select Lens
+        case 4201: M4201(); break;                                // M4201: Set Focal Distance of the current lens to the current Z
+        case 4205: M4205(); break;                                // M4205: Set Lens Name
+      #endif // #if defined(CONFIG_DRAGON_CHONK)
+
+		default: parser.unknown_command_warning(); break;
     }
     break;
 

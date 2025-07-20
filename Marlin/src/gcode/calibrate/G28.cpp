@@ -73,6 +73,10 @@
 #define DEBUG_OUT ENABLED(DEBUG_LEVELING_FEATURE)
 #include "../../core/debug_out.h"
 
+#if defined(CONFIG_DRAGON_CHONK)
+  #include "../../DragonChonk.h"
+#endif // #if defined(CONFIG_DRAGON_CHONK)
+
 #if ENABLED(QUICK_HOME)
 
   static void quick_home_xy() {
@@ -582,6 +586,10 @@ void GcodeSuite::G28() {
   report_current_position();
 
   TERN_(FULL_REPORT_TO_HOST_FEATURE, set_and_report_grblstate(old_grblstate));
+
+  #if defined(CONFIG_DRAGON_CHONK)
+  DragonChonk_PostHoming();
+  #endif // #if defined(CONFIG_DRAGON_CHONK)
 
   #ifdef EVENT_GCODE_AFTER_HOMING
     gcode.process_subcommands_now(F(EVENT_GCODE_AFTER_HOMING));

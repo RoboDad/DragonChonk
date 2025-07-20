@@ -1347,6 +1347,12 @@ private:
     static void M710_report(const bool forReplay=true);
   #endif
 
+  #if defined(CONFIG_DRAGON_CHONK)
+    static void M4200();
+    static void M4201();
+    static void M4205();
+  #endif // #if defined(CONFIG_DRAGON_CHONK)
+
   static void T(const int8_t tool_index) IF_DISABLED(HAS_TOOLCHANGE, { UNUSED(tool_index); });
 
 };

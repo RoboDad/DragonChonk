@@ -43,6 +43,9 @@
 #endif
 #include <math.h>
 
+#include "DragonChonk.h"
+#include <Adafruit_NeoPixel.h>
+
 #include "module/endstops.h"
 #include "module/motion.h"
 #include "module/planner.h"
@@ -886,6 +889,8 @@ void idle(const bool no_stepper_sleep/*=false*/) {
   // Manage Fixed-time Motion Control
   TERN_(FT_MOTION, ftMotion.loop());
 
+  DragonChonk_Process();
+
   IDLE_DONE:
   TERN_(MARLIN_DEV_MODE, idle_depth--);
 
@@ -1169,8 +1174,12 @@ void setup() {
   #define SETUP_RUN(C) do{ SETUP_LOG(STRINGIFY(C)); C; }while(0)
 
   MYSERIAL1.begin(BAUDRATE);
-  millis_t serial_connect_timeout = millis() + 1000UL;
+  // PVV: Ok, I had to bump up this timeout from 1s to 2s.  only need the extra time when running after
+  // the bootloader comnpletion.  If I hit the reset button on the Grand Central I don't need the delay...
+  millis_t serial_connect_timeout = millis() + 2000UL;
   while (!MYSERIAL1.connected() && PENDING(millis(), serial_connect_timeout)) { /*nada*/ }
+
+  DragonChonk_setup();
 
   #if ENABLED(SOVOL_SV06_RTS)
     LCD_SERIAL.begin(BAUDRATE);
@@ -1309,6 +1318,8 @@ void setup() {
   #endif
   SERIAL_ECHO_MSG(" Compiled: " __DATE__);
   SERIAL_ECHO_MSG(STR_FREE_MEMORY, hal.freeMemory(), STR_PLANNER_BUFFER_BYTES, sizeof(block_t) * (BLOCK_BUFFER_SIZE));
+
+  //PVV_FOREVER();
 
   // Some HAL need precise delay adjustment
   calibrate_delay_loop();

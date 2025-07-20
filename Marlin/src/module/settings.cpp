@@ -184,6 +184,10 @@
   #include "../feature/mmu3/mmu3_reporting.h"
 #endif
 
+#if defined(CONFIG_DRAGON_CHONK)
+  #include "../DragonChonk.h"
+#endif
+
 #pragma pack(push, 1) // No padding between variables
 
 #if HAS_ETHERNET
@@ -696,6 +700,10 @@ typedef struct SettingsDataStruct {
     bool mmu_hw_enabled;          // EEPROM_MMU_ENABLED
     // uint32_t material_changes
   #endif
+
+  #if defined(CONFIG_DRAGON_CHONK)
+    DragonChonk::Settings dragonChonk_settings;
+  #endif // #if defined(CONFIG_DRAGON_CHONK)
 
 } SettingsData;
 
@@ -1799,6 +1807,11 @@ void MarlinSettings::postprocess() {
       EEPROM_WRITE(mmu3.stealth_mode); // EEPROM_MMU_STEALTH
       EEPROM_WRITE(mmu3.mmu_hw_enabled); // EEPROM_MMU_ENABLED
     #endif
+
+    #if defined(CONFIG_DRAGON_CHONK)
+      auto &dragonChonk_settings =  DragonChonk_get_settings();
+      EEPROM_WRITE(dragonChonk_settings);
+    #endif // #if defined(CONFIG_DRAGON_CHONK)
 
     //
     // Report final CRC and Data Size
@@ -2935,6 +2948,12 @@ void MarlinSettings::postprocess() {
         EEPROM_READ(mmu3.mmu_hw_enabled); // EEPROM_MMU_ENABLED
       #endif
 
+      #if defined(CONFIG_DRAGON_CHONK)
+      DragonChonk::Settings::s_eeprom_base_address = eeprom_index;
+	  auto &dragonChonk_settings =  DragonChonk_get_settings();
+      EEPROM_READ(dragonChonk_settings);
+	  #endif // #if defined(CONFIG_DRAGON_CHONK)
+
       //
       // Validate Final Size and CRC
       //
@@ -3850,6 +3869,10 @@ void MarlinSettings::reset() {
     mmu3.mmu_hw_enabled = true;
   #endif
 
+  #if defined(CONFIG_DRAGON_CHONK)
+    DragonChonk_reset_settings();
+  #endif // #if defined(CONFIG_DRAGON_CHONK)
+
   //
   // Hotend Idle Timeout
   //
@@ -4184,6 +4207,11 @@ void MarlinSettings::reset() {
     // MMU3
     //
     TERN_(HAS_PRUSA_MMU3, gcode.MMU3_report(forReplay));
+
+    //
+    // DragonChonk
+    //
+    TERN_(CONFIG_DRAGON_CHONK, DragonChonk_report_settings(forReplay));
   }
 
 #endif // !DISABLE_M503

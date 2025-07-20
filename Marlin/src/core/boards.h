@@ -538,6 +538,7 @@
 #define BOARD_AGCM4_RAMPS_144         7100  // RAMPS 1.4.4
 #define BOARD_BRICOLEMON_V1_0         7101  // Bricolemon
 #define BOARD_BRICOLEMON_LITE_V1_0    7102  // Bricolemon Lite
+#define BOARD_DRAGON_CHONK            7110  // Dragon Chonk
 
 //
 // SAMD21 ARM Cortex-M4

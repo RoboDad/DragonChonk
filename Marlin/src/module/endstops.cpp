@@ -392,7 +392,11 @@ void Endstops::event_handler() {
 
     #if ENABLED(SD_ABORT_ON_ENDSTOP_HIT)
       if (planner.abort_on_endstop_hit) {
+
+        #if HAS_MEDIA
         card.abortFilePrintNow();
+        #endif // #if HAS_MEDIA
+
         quickstop_stepper();
         thermalManager.disable_all_heaters();
         #ifdef SD_ABORT_ON_ENDSTOP_HIT_GCODE

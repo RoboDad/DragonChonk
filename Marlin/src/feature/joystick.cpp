@@ -99,7 +99,11 @@ Joystick joystick;
         else if (raw < joy_limits[1])
           axis_jog = int16_t(raw - joy_limits[1]) / float(joy_limits[1] - joy_limits[0]);  // negative value
         // Map normal to jog value via quadratic relationship
+        #if defined(JOYSTICK_POWER_EXPONENT)
+        axis_jog = SIGN(axis_jog) * powf(fabsf(axis_jog), JOYSTICK_POWER_EXPONENT);
+        #else
         axis_jog = SIGN(axis_jog) * sq(axis_jog);
+        #endif
       }
     };
 

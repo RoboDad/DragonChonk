@@ -894,6 +894,10 @@ private:
     static void finish_status(const bool persist);
   #endif
 
+  #if defined(CONFIG_DRAGON_CHONK)
+    static void draw_laser_status_screen();
+  #endif // #if defined(CONFIG_DRAGON_CHONK)
+
   #if HAS_WIRED_LCD
     static void draw_status_screen();
     #if HAS_GRAPHICAL_TFT
